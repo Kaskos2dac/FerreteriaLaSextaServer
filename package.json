@@ -7,9 +7,12 @@
     "node": "12.13.1"
   },
   "scripts": {
-    "start": "node index.js",
+    "build-ts": "tsc",
+    "postinstall" : "npm run build-ts",
+    "start": "npm run serve",
+    "serve": "node dist/index.js",
     "build": "tsc -w",
-    "dev": "nodemon build/index.js",
+    "dev": "nodemon dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
