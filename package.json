@@ -1,7 +1,7 @@
 {
   "name": "serve",
   "version": "1.0.0",
-  "description": "",
+  "description": "proyecto para ferreteria la sexta",
   "main": "index.js",
   "engines": {
     "node": "12.13.1"
@@ -13,7 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Daniel Acero",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
