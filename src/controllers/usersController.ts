@@ -27,7 +27,6 @@ class UsersController {
   };
 
   public async create(req: Request, res: Response): Promise<void> {
-    console.log(req.body);
     await pool.query('INSERT INTO users set ?', [req.body]);
     res.json({ message: 'save user '});
   };

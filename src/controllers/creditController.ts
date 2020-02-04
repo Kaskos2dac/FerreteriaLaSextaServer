@@ -27,7 +27,6 @@ class CreditController {
 
   public async create(req: Request, res: Response): Promise<void> {
     try {
-      console.log(req.body);
       await pool.query('INSERT INTO clients set ?', [req.body]);
       res.json({ message: 'save client ' });
     } catch (error) {

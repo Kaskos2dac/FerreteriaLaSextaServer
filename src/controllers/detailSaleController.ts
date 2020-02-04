@@ -11,11 +11,10 @@ class DetailSaleController {
       res.json(error);
     }
   }
-  
+
 
   public async createwithprocedure(req: Request, res: Response): Promise<void> {
     try {
-      console.log(req.body);
       const { id_product, id_Sale, id_Client, numberProducts, priceProduct} = req.body;
       const query = `
         SET @id_product = ?;
@@ -23,14 +22,14 @@ class DetailSaleController {
         SET @id_Client = ?;
         SET @numberProducts = ?;
         SET @priceProduct = ?;
-      
-        CALL sp_Detailsale(@id_product, @id_Sale, @id_Client, 
+
+        CALL sp_Detailsale(@id_product, @id_Sale, @id_Client,
                       @numberProducts, @priceProduct);
       `;
       await pool.query(query, [id_product, id_Sale, id_Client, numberProducts, priceProduct]);
       res.status(200).json({ message: 'save Detailsale ' });
     } catch (error) {
-      console.error(error);
+      res.json(error);
     }
   }
 
@@ -67,7 +66,6 @@ WHERE detailsale.id_Sale = ?`, [id]);
         return res.json(detailSale);
       }
       res.status(404).json({ text: "the saleDetail doesn't exists" });
-      console.log(detailSale)
     } catch (error) {
       res.json(error);
     }
@@ -75,7 +73,6 @@ WHERE detailsale.id_Sale = ?`, [id]);
 
   public async create(req: Request, res: Response): Promise<void> {
     try {
-      console.log(req.body);
       await pool.query('INSERT INTO clients set ?', [req.body]);
       res.json({ message: 'save client ' });
     } catch (error) {

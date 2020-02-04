@@ -7,13 +7,12 @@ class SalesController {
 
   public async list(req: Request, res: Response) {
     try {
-      const sales = await pool.query(`SELECT sales.id_Sale, sales.id_client, sales.datesale, sales.totalProducts, sales.credit, sales.totalPrice, 
+      const sales = await pool.query(`SELECT sales.id_Sale, sales.id_client, sales.datesale, sales.totalProducts, sales.credit, sales.totalPrice,
 clients.nameClient, clients.lastName
-FROM sales 
-INNER JOIN clients ON sales.id_client = clients.id_client 
+FROM sales
+INNER JOIN clients ON sales.id_client = clients.id_client
 ORDER BY ( sales.id_Sale) DESC`);
       res.json(sales);
-      console.log(sales);
     } catch (error) {
       res.json(error);
     }
@@ -54,7 +53,6 @@ ORDER BY ( sales.id_Sale) DESC`);
   public async getTotalSaleForDay(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      console.log(id);
       const sales = await pool.query('SELECT SUM(totalPrice) as total FROM sales WHERE dateSale = ?', [id]);
       if (sales.length > 0) {
         return res.json(sales);
@@ -68,7 +66,6 @@ ORDER BY ( sales.id_Sale) DESC`);
   public async getTotalSaleForDayWitchCredit(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      console.log(id);
       const sales = await pool.query(`SELECT SUM(totalPrice) as total FROM sales WHERE credit = 'Si' AND creditState = 'Abierta' AND dateSale = ?`, [id]);
       if (sales.length > 0) {
         return res.json(sales);
@@ -85,7 +82,6 @@ ORDER BY ( sales.id_Sale) DESC`);
 group by (sales.dateSale)
 ORDER BY ( sales.id_Sale) DESC`);
       res.json(sales);
-      console.log(sales);
     } catch (error) {
       res.json(error);
     }
@@ -97,7 +93,6 @@ ORDER BY ( sales.id_Sale) DESC`);
       FROM clients INNER JOIN Sales ON sales.id_Client = clients.id_client
       WHERE sales.credit = 'Si' AND sales.creditState = 'Abierta'`);
       res.json(sales);
-      console.log(sales);
     } catch (error) {
       res.json(error);
     }
@@ -119,10 +114,10 @@ ORDER BY ( sales.id_Sale) DESC`);
   public async getOneSaleForBill(req: Request, res: Response): Promise<any> {
     try {
       const { id } = req.params;
-      const sale = await pool.query(`SELECT sales.id_Sale, sales.id_client, sales.datesale, sales.totalProducts, sales.credit, sales.totalPrice, 
+      const sale = await pool.query(`SELECT sales.id_Sale, sales.id_client, sales.datesale, sales.totalProducts, sales.credit, sales.totalPrice,
       clients.nameClient, clients.lastName, clients.dni, clients.phone
-      FROM sales 
-      INNER JOIN clients ON sales.id_client = clients.id_client 
+      FROM sales
+      INNER JOIN clients ON sales.id_client = clients.id_client
       WHERE sales.id_Sale = ?`, [id]);
       if (sale.length > 0) {
         return res.json(sale[0]);
@@ -136,7 +131,6 @@ ORDER BY ( sales.id_Sale) DESC`);
   public async getDetailSaleWitchId(req: Request, res: Response): Promise<any> {
     try {
       const { id } = req.params;
-      console.log(req.params);
       const sale = await pool.query(
         `SELECT detailsale.precio, detailsale.cantidad, products.title, sales.credit
 FROM detailsale
@@ -153,18 +147,17 @@ WHERE detailsale.id_Sale = ?`,
       res.json(error);
     }
   }
-  
+
 
   public async getToday(req: Request, res: Response): Promise<any> {
     try {
       const { id } = req.params;
-      console.log(req.params);
       const sale = await pool.query(
-        `SELECT sales.id_Sale, sales.id_client, sales.datesale, sales.totalProducts, sales.credit, sales.totalPrice, 
+        `SELECT sales.id_Sale, sales.id_client, sales.datesale, sales.totalProducts, sales.credit, sales.totalPrice,
 clients.nameClient, clients.lastName,
 detailsale.id_product,detailsale.precio,
 products.title
-FROM sales 
+FROM sales
 INNER JOIN clients ON sales.id_client = clients.id_client  JOIN detailsale ON detailsale.id_Sale = sales.id_sale
 JOIN products ON detailsale.id_product = products.id_product
 WHERE sales.datesale = ?`,
@@ -181,7 +174,6 @@ WHERE sales.datesale = ?`,
 
   public async createwithprocedure(req: Request, res: Response): Promise<void> {
     try {
-      console.log(req.body);
       const { id_Client, dateSale, totalProducts, credit, totalPrice, creditState } = req.body;
       const query = `
         SET @id_Client = ?;
@@ -194,12 +186,11 @@ WHERE sales.datesale = ?`,
       await pool.query(query, [id_Client, dateSale, totalProducts, credit, creditState, totalPrice]);
       res.json({ message: 'save sale ' });
     } catch (error) {
-      console.error(error);
+      res.json(error);
     }
   }
 
   public async create(req: Request, res: Response): Promise<void> {
-    console.log(req.body);
     await pool.query('INSERT INTO sales set ?', [req.body]);
     res.json({ message: 'save sale ' });
   }
@@ -212,9 +203,8 @@ WHERE sales.datesale = ?`,
 
   public async update(req: Request, res: Response): Promise<void> {
     try {
-      
+
       const { id } = req.params;
-      console.log(id);
       const sale = await pool.query(`UPDATE sales SET credit = 'No', creditState = 'Cerrada' WHERE id_Sale = ?`, [req.body.id_Sale, id]);
       res.json({ text: "the sale was updating " });
     } catch (error) {

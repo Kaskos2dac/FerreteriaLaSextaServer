@@ -31,7 +31,6 @@ class ClientsController {
 
   public async create(req: Request, res: Response): Promise<void> {
     try {
-      console.log(req.body);
       await pool.query('INSERT INTO clients set ?', [req.body]);
       res.json({ message: 'Se ha guardado al cliente correctamnete ' });
     } catch (error) {
@@ -41,7 +40,6 @@ class ClientsController {
 
   public async createwithprocedure(req: Request, res: Response): Promise<void> {
     try {
-      console.log(req.body);
       const { nameClient, lastName, dni, phone, email, creditAvailable } = req.body;
       const query = `
         SET @nameClient = ?;
@@ -50,7 +48,7 @@ class ClientsController {
         SET @phone = ?;
         SET @email = ?;
         SET @creditAvailable = ?;
-      
+
         CALL sp_saveClientWithCredit(@nameClient, @lastName, @dni, @phone,
                       @email, @creditAvailable);
       `;
@@ -80,7 +78,7 @@ class ClientsController {
       const { id } = req.params;
       const client = await pool.query('UPDATE clients JOIN credit ON clients.id_client = credit.id_Client  set ? WHERE credit.id_client = ?', [req.body, id]);
       res.json({ message: 'Se ha actualizado el cliente correctamnete ' });
-      
+
     } catch (error) {
       res.json({ text: "Ha ocurrido el siguiente error: " + error });
     }
