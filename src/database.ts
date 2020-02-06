@@ -6,7 +6,6 @@ const pool = mysql.createPool(keys.database);
 pool.getConnection()
     .then(connection => {
         pool.releaseConnection(connection);
-        console.log('db is connect')
     });
 
 export default pool;
