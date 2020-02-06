@@ -37,6 +37,7 @@ class Server {
     }
     start() {
         this.app.listen(this.app.get('port'), () => {
+            // tslint:disable-next-line: no-console
             console.log('server on port ' + this.app.get('port'));
         });
     }

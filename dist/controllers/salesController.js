@@ -17,13 +17,12 @@ class SalesController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sales = yield database_1.default.query(`SELECT sales.id_Sale, sales.id_client, sales.datesale, sales.totalProducts, sales.credit, sales.totalPrice, 
+                const sales = yield database_1.default.query(`SELECT sales.id_Sale, sales.id_client, sales.datesale, sales.totalProducts, sales.credit, sales.totalPrice,
 clients.nameClient, clients.lastName
-FROM sales 
-INNER JOIN clients ON sales.id_client = clients.id_client 
+FROM sales
+INNER JOIN clients ON sales.id_client = clients.id_client
 ORDER BY ( sales.id_Sale) DESC`);
                 res.json(sales);
-                console.log(sales);
             }
             catch (error) {
                 res.json(error);
@@ -76,7 +75,6 @@ ORDER BY ( sales.id_Sale) DESC`);
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                console.log(id);
                 const sales = yield database_1.default.query('SELECT SUM(totalPrice) as total FROM sales WHERE dateSale = ?', [id]);
                 if (sales.length > 0) {
                     return res.json(sales);
@@ -92,7 +90,6 @@ ORDER BY ( sales.id_Sale) DESC`);
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                console.log(id);
                 const sales = yield database_1.default.query(`SELECT SUM(totalPrice) as total FROM sales WHERE credit = 'Si' AND creditState = 'Abierta' AND dateSale = ?`, [id]);
                 if (sales.length > 0) {
                     return res.json(sales);
@@ -111,7 +108,6 @@ ORDER BY ( sales.id_Sale) DESC`);
 group by (sales.dateSale)
 ORDER BY ( sales.id_Sale) DESC`);
                 res.json(sales);
-                console.log(sales);
             }
             catch (error) {
                 res.json(error);
@@ -125,7 +121,6 @@ ORDER BY ( sales.id_Sale) DESC`);
       FROM clients INNER JOIN Sales ON sales.id_Client = clients.id_client
       WHERE sales.credit = 'Si' AND sales.creditState = 'Abierta'`);
                 res.json(sales);
-                console.log(sales);
             }
             catch (error) {
                 res.json(error);
@@ -151,10 +146,10 @@ ORDER BY ( sales.id_Sale) DESC`);
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                const sale = yield database_1.default.query(`SELECT sales.id_Sale, sales.id_client, sales.datesale, sales.totalProducts, sales.credit, sales.totalPrice, 
+                const sale = yield database_1.default.query(`SELECT sales.id_Sale, sales.id_client, sales.datesale, sales.totalProducts, sales.credit, sales.totalPrice,
       clients.nameClient, clients.lastName, clients.dni, clients.phone
-      FROM sales 
-      INNER JOIN clients ON sales.id_client = clients.id_client 
+      FROM sales
+      INNER JOIN clients ON sales.id_client = clients.id_client
       WHERE sales.id_Sale = ?`, [id]);
                 if (sale.length > 0) {
                     return res.json(sale[0]);
@@ -170,7 +165,6 @@ ORDER BY ( sales.id_Sale) DESC`);
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                console.log(req.params);
                 const sale = yield database_1.default.query(`SELECT detailsale.precio, detailsale.cantidad, products.title, sales.credit
 FROM detailsale
 INNER JOIN sales ON sales.id_sale = detailsale.id_Sale
@@ -190,12 +184,11 @@ WHERE detailsale.id_Sale = ?`, [id]);
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                console.log(req.params);
-                const sale = yield database_1.default.query(`SELECT sales.id_Sale, sales.id_client, sales.datesale, sales.totalProducts, sales.credit, sales.totalPrice, 
+                const sale = yield database_1.default.query(`SELECT sales.id_Sale, sales.id_client, sales.datesale, sales.totalProducts, sales.credit, sales.totalPrice,
 clients.nameClient, clients.lastName,
 detailsale.id_product,detailsale.precio,
 products.title
-FROM sales 
+FROM sales
 INNER JOIN clients ON sales.id_client = clients.id_client  JOIN detailsale ON detailsale.id_Sale = sales.id_sale
 JOIN products ON detailsale.id_product = products.id_product
 WHERE sales.datesale = ?`, [id]);
@@ -212,7 +205,6 @@ WHERE sales.datesale = ?`, [id]);
     createwithprocedure(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(req.body);
                 const { id_Client, dateSale, totalProducts, credit, totalPrice, creditState } = req.body;
                 const query = `
         SET @id_Client = ?;
@@ -226,13 +218,12 @@ WHERE sales.datesale = ?`, [id]);
                 res.json({ message: 'save sale ' });
             }
             catch (error) {
-                console.error(error);
+                res.json(error);
             }
         });
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body);
             yield database_1.default.query('INSERT INTO sales set ?', [req.body]);
             res.json({ message: 'save sale ' });
         });
@@ -248,7 +239,6 @@ WHERE sales.datesale = ?`, [id]);
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                console.log(id);
                 const sale = yield database_1.default.query(`UPDATE sales SET credit = 'No', creditState = 'Cerrada' WHERE id_Sale = ?`, [req.body.id_Sale, id]);
                 res.json({ text: "the sale was updating " });
             }

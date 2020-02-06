@@ -44,7 +44,6 @@ class UsersController {
     ;
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body);
             yield database_1.default.query('INSERT INTO users set ?', [req.body]);
             res.json({ message: 'save user ' });
         });

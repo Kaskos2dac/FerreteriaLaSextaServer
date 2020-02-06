@@ -47,6 +47,7 @@ class ProductsController {
                 res.status(404).json({ text: "the product doesn't exists" });
             }
             catch (error) {
+                res.json(error);
             }
         });
     }
@@ -67,7 +68,6 @@ class ProductsController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body);
             yield database_1.default.query('INSERT INTO products set ?', [req.body]);
             res.json({ message: 'save product ' });
         });

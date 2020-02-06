@@ -9,13 +9,13 @@
   "scripts": {
     "build-ts": "tsc",
     "postinstall": "npm run build-ts",
-    "start": "NODE_ENV=production node index.js",
+    "start": "npm run build && node dist/index.js",
     "serve": "node dist/index.js",
-    "build": "NODE_ENV=production",
+    "build": "rimraf ./dist && tsc",
     "build-dev": "tsc -w",
     "dev": "nodemon dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tslint": "tslint --project tsconfig.json --config tslint.json", 
+    "tslint": "tslint --project tsconfig.json --config tslint.json",
     "tslint-fix": "tslint --project tsconfig.json --config tslint.json --fix"
   },
   "keywords": [],
@@ -32,6 +32,7 @@
     "@types/express": "^4.17.2",
     "@types/morgan": "^1.7.37",
     "nodemon": "^2.0.2",
+    "rimraf": "^3.0.1",
     "tslint": "^6.0.0"
   }
 }

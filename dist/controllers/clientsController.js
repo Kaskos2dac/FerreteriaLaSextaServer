@@ -43,7 +43,6 @@ class ClientsController {
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(req.body);
                 yield database_1.default.query('INSERT INTO clients set ?', [req.body]);
                 res.json({ message: 'Se ha guardado al cliente correctamnete ' });
             }
@@ -55,7 +54,6 @@ class ClientsController {
     createwithprocedure(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(req.body);
                 const { nameClient, lastName, dni, phone, email, creditAvailable } = req.body;
                 const query = `
         SET @nameClient = ?;
@@ -64,7 +62,7 @@ class ClientsController {
         SET @phone = ?;
         SET @email = ?;
         SET @creditAvailable = ?;
-      
+
         CALL sp_saveClientWithCredit(@nameClient, @lastName, @dni, @phone,
                       @email, @creditAvailable);
       `;
